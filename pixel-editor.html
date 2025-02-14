@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Art Editor</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+            image-rendering: pixelated;
+        }
+    </style>
+</head>
+<body>
+    <h1>16x16 Pixel Art Editor</h1>
+    <canvas id="pixelCanvas" width="160" height="160"></canvas>
+    <input type="color" id="colorPicker">
+    <script>
+        const canvas = document.getElementById("pixelCanvas");
+        const ctx = canvas.getContext("2d");
+        const colorPicker = document.getElementById("colorPicker");
+
+        const pixelSize = 10; // Each pixel is 10x10 real pixels
+        let currentColor = "#000000"; // Default color is black
+
+        colorPicker.addEventListener("input", (e) => {
+            currentColor = e.target.value;
+        });
+
+        canvas.addEventListener("click", (e) => {
+            const x = Math.floor(e.offsetX / pixelSize) * pixelSize;
+            const y = Math.floor(e.offsetY / pixelSize) * pixelSize;
+            ctx.fillStyle = currentColor;
+            ctx.fillRect(x, y, pixelSize, pixelSize);
+        });
+
+        // Fill canvas with a grid
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    </script>
+</body>
+</html>

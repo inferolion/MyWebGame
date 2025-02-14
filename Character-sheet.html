@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Sheet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e2e;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 28px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        /* Photo Upload Section (9:16 Portrait) */
+        .photo-section {
+            width: 200px;
+            height: 355px; /* 9:16 aspect ratio */
+            background-color: #444;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            margin: auto;
+            margin-bottom: 20px;
+            cursor: pointer;
+            border: 2px dashed #555;
+            overflow: hidden;
+        }
+
+        .photo-section img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        /* Stats Layout */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            text-align: center;
+        }
+
+        .stat {
+            background-color: #222;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .stat span {
+            font-size: 22px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat button {
+            background-color: #ff9800;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            margin: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .stat button:hover {
+            background-color: #e68900;
+        }
+
+        /* Roll Stats Button */
+        .roll-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .roll-button:hover {
+            background-color: #3e8e41;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Character Sheet</h1>
+    <div class="container">
+
+        <!-- Photo Upload Section (9:16 Portrait) -->
+        <div class="photo-section" onclick="document.getElementById('photoUpload').click();">
+            <input type="file" id="photoUpload" accept="image/*" style="display: none;" onchange="previewImage(event)">
+            <span id="photoPlaceholder">Click to Upload Character Image</span>
+            <img id="photoPreview" style="display: none;">
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats">
+            <div class="stat">
+                <span>STR</span>
+                <button onclick="adjustStat('str', -1)">-</button>
+                <span id="str">0</span>
+                <button onclick="adjustStat('str', 1)">+</button>
+            </div>
+            <div class="stat">
+                <span>DEX</span>
+                <button onclick="adjustStat('dex', -1)">-</button>
+                <span id="dex">0</span>
+                <button onclick="adjustStat('dex', 1)">+</button>
+            </div>
+            <div class="stat">
+                <span>CON</span>
+                <button onclick="adjustStat('con', -1)">-</button>
+                <span id="con">0</span>
+                <button onclick="adjustStat('con', 1)">+</button>
+            </div>
+            <div class="stat">
+                <span>INT</span>
+                <button onclick="adjustStat('int', -1)">-</button>
+                <span id="int">0</span>
+                <button onclick="adjustStat('int', 1)">+</button>
+            </div>
+            <div class="stat">
+                <span>WIS</span>
+                <button onclick="adjustStat('wis', -1)">-</button>
+                <span id="wis">0</span>
+                <button onclick="adjustStat('wis', 1)">+</button>
+            </div>
+            <div class="stat">
+                <span>CHR</span>
+                <button onclick="adjustStat('chr', -1)">-</button>
+                <span id="chr">0</span>
+                <button onclick="adjustStat('chr', 1)">+</button>
+            </div>
+        </div>
+
+        <!-- Roll Button -->
+        <button class="roll-button" onclick="rollStats()">Roll Stats</button>
+
+    </div>
+
+    <script>
+        let pointsRemaining = 10;
+        const stats = { str: 0, dex: 0, con: 0, int: 0, wis: 0, chr: 0 };
+
+        function adjustStat(stat, change) {
+            if (pointsRemaining - change >= 0 && stats[stat] + change >= 0) {
+                stats[stat] += change;
+                pointsRemaining -= change;
+                document.getElementById(stat).innerText = stats[stat];
+            }
+        }
+
+        function rollStats() {
+            pointsRemaining = 10;
+            Object.keys(stats).forEach(stat => {
+                stats[stat] = 0;
+                document.getElementById(stat).innerText = 0;
+            });
+        }
+
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                document.getElementById('photoPlaceholder').style.display = 'none';
+                document.getElementById('photoPreview').src = reader.result;
+                document.getElementById('photoPreview').style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+
+</body>
+</html>
